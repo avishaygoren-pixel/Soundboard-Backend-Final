@@ -12,18 +12,21 @@ const anthropic = new Anthropic({
 
 app.post('/api/chat', async (req, res) => {
   try {
-    const { message } = req.body;
+    // We look for "message" (from your index.html)
+    const userMessage = req.body.message || "Find music houses in New York"; 
+    
     const response = await anthropic.messages.create({
       model: "claude-3-haiku-20240307",
       max_tokens: 1000,
-      messages: [{ role: "user", content: message }],
+      messages: [{ role: "user", content: userMessage }],
     });
+
     res.json({ reply: response.content[0].text });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "AI failed to respond" });
+    console.error("Backend Error:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
