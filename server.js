@@ -21,7 +21,7 @@ app.post('/api/chat', async (req, res) => {
     if (!message) return res.status(400).json({ error: "No message sent" });
 
     const response = await anthropic.messages.create({
-      model: "claude-3-haiku-20240307",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 1500,
       messages: [{ role: "user", content: message }],
     });
